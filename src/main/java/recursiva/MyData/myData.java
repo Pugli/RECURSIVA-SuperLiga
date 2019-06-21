@@ -10,6 +10,7 @@ import java.util.List;
 
 import com.opencsv.CSVReader;
 import recursiva.Models.Person;
+import recursiva.Utilities.Utilities;
 
 public class myData {
     public final char SEPARATOR = ';';
@@ -21,7 +22,7 @@ public class myData {
         try {
             //List<Person> personList = new ArrayList<Person>();
             CSVReader reader = null;
-            reader = new CSVReader(new FileReader("C:\\WorkSpace\\ChallengeSuperliga\\Data\\socios.csv"), SEPARATOR, QUOTE);
+            reader = new CSVReader(new FileReader("C:\\WorkSpace\\SuperLiga\\myData\\socios.csv"), SEPARATOR, QUOTE);
             String[] nextLine = null;
             while ((nextLine = reader.readNext()) != null) {
                 if (nextLine[2].equals("Racing")) {
@@ -32,7 +33,7 @@ public class myData {
                 }
             }
             reader.close();
-            float average = total / count;
+            float average = (float) total / (float) count;
             System.out.println("El promedio de edad entre los socios de racing es de: " + average);
                /* for(Person us : personList){
 
@@ -52,7 +53,7 @@ public class myData {
         try {
             List<Person> personList = new ArrayList<Person>();
             CSVReader reader;
-            reader = new CSVReader(new FileReader("C:\\WorkSpace\\ChallengeSuperliga\\Data\\socios.csv"), SEPARATOR, QUOTE);
+            reader = new CSVReader(new FileReader("C:\\WorkSpace\\SuperLiga\\myData\\socios.csv"), SEPARATOR, QUOTE);
             String[] nextLine;
             while ((nextLine = reader.readNext()) != null && personList.size() < 100) {
                 if (nextLine[3].equals("Casado") && nextLine[4].equals("Universitario")) {
@@ -88,5 +89,65 @@ public class myData {
         });
     }
 
+    public void excercise4() {
+        try {
+            List<String> nameList = new ArrayList<String>();
+            CSVReader reader;
+            reader = new CSVReader(new FileReader("C:\\WorkSpace\\SuperLiga\\myData\\socios.csv"), SEPARATOR, QUOTE);
+            String[] nextLine;
+            while ((nextLine = reader.readNext()) != null) {
+                if (nextLine[2].equals("River")) {
+                    nameList.add(nextLine[0]);
+                }
+            }
+            reader.close();
+            orderByname(nameList);
 
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void orderByname(List nameList) {
+        int i = 0;
+        int o = 0;
+
+        List<Utilities> newList = new ArrayList<Utilities>();
+
+        while (nameList != null && nameList.size() > i) {
+            int counti = 1;
+            if (!(nameList.equals(""))) {
+                Object name = nameList.get(i);
+                o = i + 1;
+                while (nameList.size() > o) {
+                    if (nameList.get(i).equals(nameList.get(o))) {
+                        counti++;
+                        nameList.remove(o);
+                    }
+                    o++;
+                }
+                Utilities utilities = new Utilities(counti, (String) name);
+                newList.add(utilities);
+            }
+            i++;
+        }
+        orderByCounti(newList);
+        System.out.println("Los nombres mas comunes entre los hinchas de River son: ");
+        for (int n = 0; n < 5; n++) {
+            System.out.println(newList.get(n).getName());
+        }
+
+    }
+
+    public void orderByCounti(List list) {
+        Collections.sort(list, new Comparator<Utilities>() {
+            @Override
+            public int compare(Utilities p1, Utilities p2) {
+                return new Integer(p2.getCount()).compareTo(new Integer(p1.getCount()));
+            }
+        });
+    }
 }

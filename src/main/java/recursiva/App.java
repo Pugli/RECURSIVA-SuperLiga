@@ -10,13 +10,16 @@ public class App {
         myData myData = new myData();
 
         // PUNTO 2
-        // myData.exercise2();
+        //myData.exercise2();
 
         // PUNTO 3
         //myData.excercise3();
 
-// PUNTO 4
+        // PUNTO 4
+        //myData.excercise4();
 
+        // PUNTO 5
+        
 
     }
 }
