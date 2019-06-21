@@ -7,6 +7,9 @@ public class Person {
     private String maritalStatus;
     private String studies;
 
+    public Person() {
+    }
+
     public Person(String name, int age, String team, String maritalStatus, String studies) {
         this.name = name;
         this.age = age;

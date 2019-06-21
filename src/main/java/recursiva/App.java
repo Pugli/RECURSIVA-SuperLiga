@@ -9,6 +9,9 @@ public class App {
     public static void main(String[] args) {
         myData myData = new myData();
 
+        // PUNTO 1
+        // myData.exercise1();
+
         // PUNTO 2
         //myData.exercise2();
 
@@ -19,7 +22,7 @@ public class App {
         //myData.excercise4();
 
         // PUNTO 5
-        
+        // myData.excercise5();
 
     }
 }

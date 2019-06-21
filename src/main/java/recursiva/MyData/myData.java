@@ -16,31 +16,18 @@ public class myData {
     public final char SEPARATOR = ';';
     public final char QUOTE = '"';
 
-    public void exercise2() { //PUNTO 2
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public void exercise1() { //PUNTO 1
         int count = 0;
-        int total = 0;
         try {
-            //List<Person> personList = new ArrayList<Person>();
             CSVReader reader = null;
             reader = new CSVReader(new FileReader("C:\\WorkSpace\\SuperLiga\\myData\\socios.csv"), SEPARATOR, QUOTE);
             String[] nextLine = null;
             while ((nextLine = reader.readNext()) != null) {
-                if (nextLine[2].equals("Racing")) {
-                    int age = Integer.parseInt(nextLine[1]);
-                    total = total + age;
-                    count++;
-                    // personList.add(new Person(name,age, team, maritalStatus,studies));
-                }
+                count++;
             }
             reader.close();
-            float average = (float) total / (float) count;
-            System.out.println("El promedio de edad entre los socios de racing es de: " + average);
-               /* for(Person us : personList){
-
-                    System.out.println("nombre: "+us.getName()+" Edad: "+us.getAge()+" hincha de: "+us.getTeam()+
-                            " Estado civil: "+us.getMaritalStatus()+" Estudios: "+us.getStudies());
-                } */
-
+            System.out.println("cantidad de socios en total es:  " + count);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -48,6 +35,30 @@ public class myData {
         }
     }
 
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public void exercise2() { //PUNTO 2
+        int count = 0;
+        int total = 0;
+        try {
+            CSVReader reader;
+            reader = new CSVReader(new FileReader("C:\\WorkSpace\\SuperLiga\\myData\\socios.csv"), SEPARATOR, QUOTE);
+            String[] nextLine;
+            while ((nextLine = reader.readNext()) != null) {
+                if (nextLine[2].equals("Racing")) {
+                    int age = Integer.parseInt(nextLine[1]);
+                    total = total + age;
+                    count++;
+                }
+            }
+            reader.close();
+            float average = (float) total / (float) count;
+            System.out.println("El promedio de edad entre los socios de racing es de: " + average);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void excercise3() { //PUNTO 3
         int count = 0;
         try {
@@ -72,24 +83,22 @@ public class myData {
                 System.out.println("nombre: " + us.getName() + " Edad: " + us.getAge() + " hincha de: " + us.getTeam());
             }
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-
-    public void order(List list) {
+    private void order(List list) {
         Collections.sort(list, new Comparator<Person>() {
             @Override
             public int compare(Person p1, Person p2) {
-                return new Integer(p1.getAge()).compareTo(new Integer(p2.getAge()));
+                return Integer.compare(p1.getAge(), p2.getAge());
             }
         });
     }
 
-    public void excercise4() {
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public void excercise4() { // PUNTO 4
         try {
             List<String> nameList = new ArrayList<String>();
             CSVReader reader;
@@ -102,34 +111,29 @@ public class myData {
             }
             reader.close();
             orderByname(nameList);
-
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void orderByname(List nameList) {
+    private void orderByname(List<String> nameList) {
         int i = 0;
         int o = 0;
-
         List<Utilities> newList = new ArrayList<Utilities>();
-
         while (nameList != null && nameList.size() > i) {
             int counti = 1;
-            if (!(nameList.equals(""))) {
-                Object name = nameList.get(i);
+            if (!(nameList.get(i).equals(" "))) {
+                String name = nameList.get(i);
                 o = i + 1;
                 while (nameList.size() > o) {
                     if (nameList.get(i).equals(nameList.get(o))) {
                         counti++;
                         nameList.remove(o);
+                        o--;
                     }
                     o++;
                 }
-                Utilities utilities = new Utilities(counti, (String) name);
+                Utilities utilities = new Utilities(counti, name);
                 newList.add(utilities);
             }
             i++;
@@ -139,15 +143,85 @@ public class myData {
         for (int n = 0; n < 5; n++) {
             System.out.println(newList.get(n).getName());
         }
-
     }
 
-    public void orderByCounti(List list) {
+    private void orderByCounti(List list) {
         Collections.sort(list, new Comparator<Utilities>() {
             @Override
             public int compare(Utilities p1, Utilities p2) {
-                return new Integer(p2.getCount()).compareTo(new Integer(p1.getCount()));
+                return Integer.compare(p2.getCount(), p1.getCount());
             }
         });
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public void excercise5() { //PUNTO 5
+        try {
+            List<Person> teamList = new ArrayList<>();
+            CSVReader reader;
+            reader = new CSVReader(new FileReader("C:\\WorkSpace\\SuperLiga\\myData\\socios.csv"), SEPARATOR, QUOTE);
+            String[] nextLine;
+            while ((nextLine = reader.readNext()) != null) {
+                Person x = new Person();
+                x.setAge(Integer.parseInt(nextLine[1]));
+                x.setTeam(nextLine[2]);
+                teamList.add(x);
+            }
+            reader.close();
+            orderByteam(teamList);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void orderByteam(List<Person> nameList) {
+        int i = 0;
+        int o = 0;
+        List<Utilities> newList = new ArrayList<Utilities>();
+        while (nameList != null && nameList.size() > i) {
+            int counti = 1;
+            if (!(nameList.get(i).equals(""))) {
+                String name = nameList.get(i).getTeam();
+                int higher = nameList.get(i).getAge();
+                int less = nameList.get(i).getAge();
+                float total = (float) nameList.get(i).getAge();
+                o = i + 1;
+                while (nameList.size() > o) {
+                    if (nameList.get(i).getTeam().equals(nameList.get(o).getTeam())) {
+                        higher = SearchHiger(higher, nameList.get(o).getAge());
+                        less = searchLess(less, nameList.get(o).getAge());
+                        total = total + (float) nameList.get(o).getAge();
+                        counti++;
+                        nameList.remove(o);
+                        o--;
+                    }
+                    o++;
+                }
+                float prom = total / (float) counti;
+                Utilities utilities = new Utilities(counti, name, higher, less, prom);
+                newList.add(utilities);
+            }
+            i++;
+        }
+        orderByCounti(newList);
+        for (Utilities us : newList) {
+            System.out.println("Equipo: " + us.getName() + " Cantidad de socios: " + us.getCount() + " Edad mayor: " + us.getHihger() + " Edad menor: " + us.getLess() + " edad promedio: " + us.getProm());
+        }
+    }
+
+    private int SearchHiger(int old, int newi) {
+        if (old > newi) {
+            return old;
+        } else {
+            return newi;
+        }
+    }
+
+    private int searchLess(int old, int newi) {
+        if (old > newi) {
+            return newi;
+        } else {
+            return old;
+        }
     }
 }
