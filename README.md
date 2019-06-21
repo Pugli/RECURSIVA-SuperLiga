@@ -2,4 +2,4 @@
 
  Enunciados resueltos. Hecho en JAVA con uso de Maven
  
- nota: Las dirreciones a los archivos csv pueden ser muy especificas.
+ nota: Las direcciones a los archivos csv pueden ser muy especificas.
